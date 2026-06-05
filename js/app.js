@@ -1,4 +1,3 @@
-// --- inisialisasi status data dari local storage ---
 let tasks = JSON.parse(localStorage.getItem('dashboard_tasks')) || [];
 let quickLinks = JSON.parse(localStorage.getItem('dashboard_links')) || [
     { id: 1, name: 'google', url: 'https://google.com' },
@@ -7,46 +6,38 @@ let quickLinks = JSON.parse(localStorage.getItem('dashboard_links')) || [
 let currentTheme = localStorage.getItem('dashboard_theme') || 'light';
 let customName = localStorage.getItem('dashboard_name') || 'captain';
 
-// --- elemen dom ---
 const clockEl = document.getElementById('clock');
 const dateEl = document.getElementById('date');
 const greetingTextEl = document.getElementById('greetingText');
 const customNameInput = document.getElementById('customNameInput');
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 
-// dom timer
 const timerDisplay = document.getElementById('timerDisplay');
 const startTimerBtn = document.getElementById('startTimerBtn');
 const stopTimerBtn = document.getElementById('stopTimerBtn');
 const resetTimerBtn = document.getElementById('resetTimerBtn');
 
-// dom tugas (tasks)
 const taskForm = document.getElementById('taskForm');
 const taskInput = document.getElementById('taskInput');
 const taskList = document.getElementById('taskList');
 const sortTasksSelect = document.getElementById('sortTasksSelect');
 
-// dom quick links
 const linkForm = document.getElementById('linkForm');
 const linkNameInput = document.getElementById('linkNameInput');
 const linkUrlInput = document.getElementById('linkUrlInput');
 const linksContainer = document.getElementById('linksContainer');
 
-// --- 1. fungsi waktu, tanggal, dan greeting ---
 function updateClockAndGreeting() {
     const now = new Date();
     
-    // update jam murni digital
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
     clockEl.textContent = `${hours}:${minutes}:${seconds}`;
     
-    // update tanggal
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     dateEl.textContent = now.toLocaleDateString('en-US', options);
     
-    // hitung ucapan berdasarkan jam
     const currentHour = now.getHours();
     let greeting = 'good night';
     if (currentHour >= 5 && currentHour < 12) {
@@ -61,13 +52,11 @@ function updateClockAndGreeting() {
 setInterval(updateClockAndGreeting, 1000);
 updateClockAndGreeting();
 
-// fitur simpan nama kustom (challenge 2)
 customNameInput.value = customName;
 customNameInput.addEventListener('input', (e) => {
     localStorage.setItem('dashboard_name', e.target.value);
 });
 
-// --- 2. fitur light/dark mode (challenge 1) ---
 document.documentElement.setAttribute('data-theme', currentTheme);
 updateThemeButtonUI();
 
@@ -82,9 +71,8 @@ function updateThemeButtonUI() {
     themeToggleBtn.textContent = currentTheme === 'light' ? '🌙 dark mode' : '☀️ light mode';
 }
 
-// --- 3. fitur focus timer (pomodoro) ---
 let timerInterval = null;
-let timeLeft = 25 * 60; // default 25 menit dalam satuan detik
+let timeLeft = 25 * 60;
 
 function updateTimerDisplay() {
     const mins = String(Math.floor(timeLeft / 60)).padStart(2, '0');
@@ -93,7 +81,7 @@ function updateTimerDisplay() {
 }
 
 startTimerBtn.addEventListener('click', () => {
-    if (timerInterval !== null) return; // cegah duplikasi interval kerja
+    if (timerInterval !== null) return;
     timerInterval = setInterval(() => {
         if (timeLeft > 0) {
             timeLeft--;
@@ -121,13 +109,11 @@ resetTimerBtn.addEventListener('click', () => {
 });
 updateTimerDisplay();
 
-// --- 4. manajemen tugas / to-do list (termasuk challenge 3: sort tasks) ---
 taskForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const taskText = taskInput.value.trim();
     if (!taskText) return;
 
-    // pencegahan duplikasi tugas dasar (opsional/tambahan aman)
     const isDuplicate = tasks.some(t => t.text.toLowerCase() === taskText.toLowerCase());
     if (isDuplicate) {
         alert('this task already exists, ayang!');
@@ -148,7 +134,6 @@ taskForm.addEventListener('submit', (e) => {
 function saveAndRenderTasks() {
     localStorage.setItem('dashboard_tasks', JSON.stringify(tasks));
     
-    // salin array tugas untuk diolah urutannya (sorting)
     let processedTasks = [...tasks];
     const sortBy = sortTasksSelect.value;
 
@@ -177,21 +162,17 @@ function saveAndRenderTasks() {
     });
 }
 
-// deteksi aksi klik tombol di dalam daftar tugas (event delegation)
 taskList.addEventListener('click', (e) => {
     const id = parseInt(e.target.getAttribute('data-id'));
     if (!id) return;
 
     if (e.target.type === 'checkbox') {
-        // ubah status selesai tugas
         tasks = tasks.map(t => t.id === id ? { ...t, completed: e.target.checked } : t);
         saveAndRenderTasks();
     } else if (e.target.classList.contains('delete-btn')) {
-        // hapus tugas
         tasks = tasks.filter(t => t.id !== id);
         saveAndRenderTasks();
     } else if (e.target.classList.contains('edit-btn')) {
-        // edit nama tugas
         const targetTask = tasks.find(t => t.id === id);
         const newText = prompt('edit your task title:', targetTask.text);
         if (newText && newText.trim() !== '') {
@@ -204,7 +185,6 @@ taskList.addEventListener('click', (e) => {
 sortTasksSelect.addEventListener('change', saveAndRenderTasks);
 saveAndRenderTasks();
 
-// --- 5. manajemen fitur quick links ---
 linkForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = linkNameInput.value.trim().toLowerCase();
