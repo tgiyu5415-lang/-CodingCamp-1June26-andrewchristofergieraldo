@@ -1,0 +1,327 @@
+/* variabel warna untuk mempermudah light/dark mode */
+:root {
+    --bg-color: #f3f0fc;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --text-muted: #666666;
+    --primary-color: #5c3bc6;
+    --primary-hover: #482db0;
+    --danger-color: #e04d4d;
+    --danger-hover: #c43b3b;
+    --border-color: #e1dbf7;
+    --shadow: 0 4px 12px rgba(92, 59, 198, 0.08);
+}
+
+[data-theme="dark"] {
+    --bg-color: #120f24;
+    --card-bg: #1c1836;
+    --text-color: #f1edff;
+    --text-muted: #b0a8d1;
+    --primary-color: #8263f3;
+    --primary-hover: #6a4ae2;
+    --danger-color: #ff6060;
+    --danger-hover: #e04444;
+    --border-color: #2e2854;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.3s elements, color 0.3s ease;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.theme-toggle-container {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.dashboard-container {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* komponen kartu dashboard */
+.dashboard-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+.header-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+#clock {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+#date {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.greeting-container {
+    margin-top: 5px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#customNameInput {
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    border-bottom: 2px dashed var(--primary-color);
+    color: var(--text-color);
+    width: 200px;
+    outline: none;
+    padding: 2px 5px;
+}
+
+/* susunan layout grid utama */
+.main-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .main-content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.links-card {
+    grid-column: 1 / -1;
+}
+
+h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    text-transform: capitalize;
+}
+
+/* pengaturan focus timer */
+.timer-display {
+    font-size: 4.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 20px 0;
+    color: var(--text-color);
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* inputan grup dan form */
+.input-group, .input-group-links {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input-group-links {
+    flex-wrap: wrap;
+}
+
+.input-group input, .input-group-links input {
+    flex: 1;
+    min-width: 150px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    outline: none;
+}
+
+.input-group input:focus, .input-group-links input:focus {
+    border-color: var(--primary-color);
+}
+
+/* pengaturan tombol */
+button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    filter: brightness(0.9);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-hover);
+}
+
+/* bagian sorting task */
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-header-flex h2 {
+    margin-bottom: 0;
+}
+
+.sort-select {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    outline: none;
+}
+
+/* list daftar tugas */
+.task-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    gap: 10px;
+}
+
+.task-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.task-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.task-text {
+    font-size: 1rem;
+    word-break: break-all;
+}
+
+.task-text.completed {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+.task-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+/* tata letak quick links */
+.links-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.link-btn-wrapper {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.quick-link-btn {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.quick-link-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.delete-link-btn {
+    background-color: rgba(0, 0, 0, 0.15);
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.delete-link-btn:hover {
+    background-color: var(--danger-color);
+}
